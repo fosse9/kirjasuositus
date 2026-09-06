@@ -13,4 +13,4 @@ Sovelluksessa käyttäjät pystyvät jakamaan kirja suosituksia ja löytämään
 - Käyttäjä pystyy kommentoimaan ja arvostelemaan omia ja muiden käyttäjien lisäämiä kirja suosituksia.
 - Kirja suosituksen yhteydessä näytetään siihen liittyvät kommentit ja arvostelut.
 
-Sovelluksen pääasiallinen tietokohde on kirja suositukset ja toissijainen tietokohde on kirjavinkkiin liittyvä kommentti/arvostelu.
+Sovelluksen pääasiallinen tietokohde on kirja suositukset ja toissijainen tietokohde on kirja suositukseen liittyvä kommentti/arvostelu.
