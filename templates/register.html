@@ -1,0 +1,29 @@
+<!doctype html>
+<title>Luo tunnus</title>
+
+<h1>Luo tunnus</h1>
+
+{% for message in get_flashed_messages() %}
+<p>{{ message }}</p>
+{% endfor %}
+
+<form action="/create" method="post">
+  <p>
+    Tunnus:
+    <input type="text" name="username" required>
+  </p>
+
+  <p>
+    Salasana:
+    <input type="password" name="password1" required>
+  </p>
+
+  <p>
+    Salasana uudelleen:
+    <input type="password" name="password2" required>
+  </p>
+
+  <input type="submit" value="Luo tunnus">
+</form>
+
+<p><a href="/">Takaisin</a></p>

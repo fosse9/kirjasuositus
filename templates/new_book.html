@@ -1,0 +1,25 @@
+<!doctype html>
+<title>Uusi kirjasuositus</title>
+
+<h1>Uusi kirjasuositus</h1>
+
+<form action="/create_book" method="post">
+  <p>
+    Kirjan nimi:<br>
+    <input type="text" name="title" required>
+  </p>
+
+  <p>
+    Kirjailija:<br>
+    <input type="text" name="author" required>
+  </p>
+
+  <p>
+    Kuvaus:<br>
+    <textarea name="description" rows="6" cols="50" required></textarea>
+  </p>
+
+  <input type="submit" value="Lisää">
+</form>
+
+<p><a href="/">Takaisin</a></p>

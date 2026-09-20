@@ -1,0 +1,18 @@
+<!doctype html>
+<title>{{ book.title }}</title>
+
+<h1>{{ book.title }}</h1>
+
+<p><strong>Kirjailija:</strong> {{ book.author }}</p>
+<p><strong>Suosittelija:</strong> {{ book.username }}</p>
+
+<p>{{ book.description }}</p>
+
+{% if session.user_id == book.user_id %}
+<p>
+  <a href="/edit_book/{{ book.id }}">Muokkaa</a> |
+  <a href="/remove_book/{{ book.id }}">Poista</a>
+</p>
+{% endif %}
+
+<p><a href="/">Takaisin</a></p>
