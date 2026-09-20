@@ -16,3 +16,11 @@ Sovelluksessa käyttäjät pystyvät jakamaan kirja suosituksia ja löytämään
 - Kirja suosituksen yhteydessä näytetään siihen liittyvät kommentit ja arvostelut.
 
 Sovelluksen pääasiallinen tietokohde on kirja suositukset ja toissijainen tietokohde on kirja suositukseen liittyvä kommentti/arvostelu.
+
+## Sovelluksen asennus
+Asenna Flask:
+    $ pip install flask
+Luo tietokanta:
+    $ sqlite3 database.db < schema.sql
+Käynnistä sovellus:
+    $ flask run
