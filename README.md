@@ -19,8 +19,13 @@ Sovelluksen pääasiallinen tietokohde on kirja suositukset ja toissijainen tiet
 
 ## Sovelluksen asennus
 Asenna Flask:
-    $ pip install flask
+
+     pip install flask
+
 Luo tietokanta:
-    $ sqlite3 database.db < schema.sql
+
+     sqlite3 database.db < schema.sql
+
 Käynnistä sovellus:
-    $ flask run
+
+     flask run
