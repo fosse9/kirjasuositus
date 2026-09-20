@@ -1,0 +1,34 @@
+<!doctype html>
+<title>Kirjasuositukset</title>
+
+<h1>Kirjasuositukset</h1>
+
+{% if session.user_id %}
+<p>
+  Olet kirjautunut nimellä {{ session.username }}.
+</p>
+
+<p>
+  <a href="/new_book">Lisää kirjasuositus</a> |
+  <a href="/find_book">Hae</a> |
+  <a href="/logout">Kirjaudu ulos</a>
+</p>
+{% else %}
+<p>
+  <a href="/register">Luo tunnus</a> |
+  <a href="/login">Kirjaudu</a> |
+  <a href="/find_book">Hae</a>
+</p>
+{% endif %}
+
+<hr>
+
+{% for book in books %}
+<p>
+  <a href="/book/{{ book.id }}">{{ book.title }}</a>
+  – {{ book.author }}
+  ({{ book.username }})
+</p>
+{% else %}
+<p>Ei vielä kirjasuosituksia.</p>
+{% endfor %}
