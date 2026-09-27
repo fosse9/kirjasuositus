@@ -3,26 +3,31 @@
 
 <h1>Muokkaa kirjasuositusta</h1>
 
+{% for error in errors %}
+<p>{{ error }}</p>
+{% endfor %}
+
 <form action="/update_book" method="post">
   <input type="hidden" name="book_id" value="{{ book.id }}">
 
   <p>
-    Kirjan nimi:<br>
-    <input type="text" name="title" value="{{ book.title }}" required>
+    Kirjan nimi (enintään 100 merkkiä):<br>
+    <input type="text" name="title" value="{{ request.form.get('title', book.title) }}" required>
   </p>
 
   <p>
-    Kirjailija:<br>
-    <input type="text" name="author" value="{{ book.author }}" required>
+    Kirjailija (enintään 100 merkkiä):<br>
+    <input type="text" name="author" value="{{ request.form.get('author', book.author) }}" required>
   </p>
 
   <p>
-    Kuvaus:<br>
+    Kuvaus (enintään 5000 merkkiä):<br>
     <textarea name="description"
               rows="6"
               cols="50"
-              required>{{ book.description }}</textarea>
+              required>{{ request.form.get('description', book.description) }}</textarea>
   </p>
 
   <input type="submit" value="Tallenna">
+  <input type="submit" name="cancel" value="Peruuta" formnovalidate>
 </form>

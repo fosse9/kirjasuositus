@@ -35,7 +35,15 @@ def show_book(book_id):
 
 @app.route("/find_book")
 def find_book():
-    query = request.args.get("query", "")
+    query = request.args.get("query", "").strip()
+
+    if len(query) > 100:
+        return render_template(
+            "find_book.html",
+            query=query,
+            results=[],
+            errors=["VIRHE: hakusana saa olla enintään 100 merkkiä."]
+        ), 400
 
     if query:
         results = books.find_books(query)
@@ -59,12 +67,23 @@ def new_book():
 def create_book():
     require_login()
 
-    title = request.form["title"].strip()
-    author = request.form["author"].strip()
-    description = request.form["description"].strip()
+    title = request.form.get("title", "").strip()
+    author = request.form.get("author", "").strip()
+    description = request.form.get("description", "").strip()
 
-    if not title or not author or not description:
-        abort(403)
+    errors = []
+
+    if not 1 <= len(title) <= 100:
+        errors.append("VIRHE: kirjan nimen tulee olla 1-100 merkkiä.")
+
+    if not 1 <= len(author) <= 100:
+        errors.append("VIRHE: kirjailijan nimen tulee olla 1-100 merkkiä.")
+
+    if not 1 <= len(description) <= 5000:
+        errors.append("VIRHE: kuvauksen tulee olla 1-5000 merkkiä.")
+
+    if errors:
+        return render_template("new_book.html", errors=errors), 400
 
     book_id = books.add_book(
         title,
@@ -104,12 +123,26 @@ def update_book():
     if book["user_id"] != session["user_id"]:
         abort(403)
 
-    title = request.form["title"].strip()
-    author = request.form["author"].strip()
-    description = request.form["description"].strip()
+    if "cancel" in request.form:
+        return redirect("/book/" + str(book_id))
 
-    if not title or not author or not description:
-        abort(403)
+    title = request.form.get("title", "").strip()
+    author = request.form.get("author", "").strip()
+    description = request.form.get("description", "").strip()
+
+    errors = []
+
+    if not 1 <= len(title) <= 100:
+        errors.append("VIRHE: kirjan nimen tulee olla 1-100 merkkiä.")
+
+    if not 1 <= len(author) <= 100:
+        errors.append("VIRHE: kirjailijan nimen tulee olla 1-100 merkkiä.")
+
+    if not 1 <= len(description) <= 5000:
+        errors.append("VIRHE: kuvauksen tulee olla 1-5000 merkkiä.")
+
+    if errors:
+        return render_template("edit_book.html", book=book, errors=errors), 400
 
     books.update_book(
         book_id,
@@ -156,6 +189,14 @@ def create():
 
     if not username or not password1:
         flash("VIRHE: tunnus ja salasana vaaditaan")
+        return redirect("/register")
+
+    if len(username) > 30:
+        flash("VIRHE: tunnus saa olla enintään 30 merkkiä")
+        return redirect("/register")
+
+    if len(password1) > 128 or len(password2) > 128:
+        flash("VIRHE: salasana saa olla enintään 128 merkkiä")
         return redirect("/register")
 
     if password1 != password2:

@@ -1,0 +1,36 @@
+<!doctype html>
+<title>Hae kirjasuosituksia</title>
+
+<h1>Hae kirjasuosituksia</h1>
+
+<p>Hae kirjan nimen, kirjailijan tai kuvauksen perusteella.</p>
+
+{% for error in errors %}
+<p>{{ error }}</p>
+{% endfor %}
+
+<form action="/find_book" method="get">
+  <p>
+    <label for="query">Hakusana (enintään 100 merkkiä):</label><br>
+    <input type="text" id="query" name="query" value="{{ query }}">
+  </p>
+
+  <input type="submit" value="Hae">
+</form>
+
+{% if query and not errors %}
+<hr>
+
+<h2>Hakutulokset</h2>
+
+{% for book in results %}
+<p>
+  <a href="/book/{{ book.id }}">{{ book.title }}</a>
+  - {{ book.author }}
+</p>
+{% else %}
+<p>Ei hakutuloksia.</p>
+{% endfor %}
+{% endif %}
+
+<p><a href="/">Takaisin</a></p>
