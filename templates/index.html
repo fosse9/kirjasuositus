@@ -5,14 +5,18 @@
 
 {% if session.user_id %}
 <p>
-  Olet kirjautunut nimellä {{ session.username }}.
+  Olet kirjautunut nimellä <a href="/user/{{ session.user_id }}">{{ session.username }}</a>.
 </p>
 
 <p>
   <a href="/new_book">Lisää kirjasuositus</a> |
-  <a href="/find_book">Hae</a> |
-  <a href="/logout">Kirjaudu ulos</a>
+  <a href="/find_book">Hae</a>
 </p>
+
+<form action="/logout" method="post">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+  <input type="submit" value="Kirjaudu ulos">
+</form>
 {% else %}
 <p>
   <a href="/register">Luo tunnus</a> |
@@ -26,8 +30,8 @@
 {% for book in books %}
 <p>
   <a href="/book/{{ book.id }}">{{ book.title }}</a>
-  – {{ book.author }}
-  ({{ book.username }})
+  - {{ book.author }}
+  (<a href="/user/{{ book.user_id }}">{{ book.username }}</a>)
 </p>
 {% else %}
 <p>Ei vielä kirjasuosituksia.</p>

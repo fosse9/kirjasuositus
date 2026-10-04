@@ -8,6 +8,7 @@
 {% endfor %}
 
 <form action="/update_book" method="post">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
   <input type="hidden" name="book_id" value="{{ book.id }}">
 
   <p>
@@ -27,6 +28,21 @@
               cols="50"
               required>{{ request.form.get('description', book.description) }}</textarea>
   </p>
+
+  <p>Valitse vähintään yksi luokittelu.</p>
+
+  {% for group in categories|groupby('type') %}
+  <fieldset>
+    <legend>{{ group.grouper }}</legend>
+    {% for category in group.list %}
+    <label>
+      <input type="checkbox" name="category_ids" value="{{ category.id }}"
+             {% if category.id|string in selected_categories %}checked{% endif %}>
+      {{ category.name }}
+    </label><br>
+    {% endfor %}
+  </fieldset>
+  {% endfor %}
 
   <input type="submit" value="Tallenna">
   <input type="submit" name="cancel" value="Peruuta" formnovalidate>

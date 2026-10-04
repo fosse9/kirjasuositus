@@ -3,7 +3,7 @@
 
 <h1>Hae kirjasuosituksia</h1>
 
-<p>Hae kirjan nimen, kirjailijan tai kuvauksen perusteella.</p>
+<p>Hae kirjan nimen, kirjailijan, kuvauksen tai luokittelun perusteella.</p>
 
 {% for error in errors %}
 <p>{{ error }}</p>
@@ -15,10 +15,26 @@
     <input type="text" id="query" name="query" value="{{ query }}">
   </p>
 
+  <p>Voit rajata hakua luokitteluilla myös ilman hakusanaa.
+     Tuloksissa ovat kirjat, joilla on kaikki valitut luokittelut.</p>
+
+  {% for group in categories|groupby('type') %}
+  <fieldset>
+    <legend>{{ group.grouper }}</legend>
+    {% for category in group.list %}
+    <label>
+      <input type="checkbox" name="category_ids" value="{{ category.id }}"
+             {% if category.id|string in selected_categories %}checked{% endif %}>
+      {{ category.name }}
+    </label><br>
+    {% endfor %}
+  </fieldset>
+  {% endfor %}
+
   <input type="submit" value="Hae">
 </form>
 
-{% if query and not errors %}
+{% if (query or selected_categories) and not errors %}
 <hr>
 
 <h2>Hakutulokset</h2>

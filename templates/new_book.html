@@ -8,6 +8,7 @@
 {% endfor %}
 
 <form action="/create_book" method="post">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
   <p>
     Kirjan nimi (enintään 100 merkkiä):<br>
     <input type="text" name="title" value="{{ request.form.get('title', '') }}" required>
@@ -22,6 +23,21 @@
     Kuvaus (enintään 5000 merkkiä):<br>
     <textarea name="description" rows="6" cols="50" required>{{ request.form.get('description', '') }}</textarea>
   </p>
+
+  <p>Valitse vähintään yksi luokittelu.</p>
+
+  {% for group in categories|groupby('type') %}
+  <fieldset>
+    <legend>{{ group.grouper }}</legend>
+    {% for category in group.list %}
+    <label>
+      <input type="checkbox" name="category_ids" value="{{ category.id }}"
+             {% if category.id|string in selected_categories %}checked{% endif %}>
+      {{ category.name }}
+    </label><br>
+    {% endfor %}
+  </fieldset>
+  {% endfor %}
 
   <input type="submit" value="Lisää">
 </form>

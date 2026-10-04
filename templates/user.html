@@ -1,0 +1,19 @@
+<!doctype html>
+<title>Käyttäjä {{ user.username }}</title>
+
+<h1>Käyttäjä {{ user.username }}</h1>
+
+<p>Lisättyjä kirjasuosituksia: {{ books|count }}</p>
+
+<h2>Käyttäjän kirjasuositukset</h2>
+
+{% for book in books %}
+<p>
+  <a href="/book/{{ book.id }}">{{ book.title }}</a>
+  - {{ book.author }}
+</p>
+{% else %}
+<p>Ei vielä kirjasuosituksia.</p>
+{% endfor %}
+
+<p><a href="/">Takaisin</a></p>

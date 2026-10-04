@@ -4,7 +4,11 @@
 <h1>{{ book.title }}</h1>
 
 <p><strong>Kirjailija:</strong> {{ book.author }}</p>
-<p><strong>Suosittelija:</strong> {{ book.username }}</p>
+<p><strong>Suosittelija:</strong> <a href="/user/{{ book.user_id }}">{{ book.username }}</a></p>
+
+{% for group in categories|groupby('type') %}
+<p><strong>{{ group.grouper }}:</strong> {{ group.list|map(attribute='name')|join(', ') }}</p>
+{% endfor %}
 
 <p>{{ book.description }}</p>
 
@@ -13,6 +17,44 @@
   <a href="/edit_book/{{ book.id }}">Muokkaa</a> |
   <a href="/remove_book/{{ book.id }}">Poista</a>
 </p>
+{% endif %}
+
+<hr>
+
+<h2 id="comments">Kommentit</h2>
+
+{% for comment in comments %}
+<p>
+  <a href="/user/{{ comment.user_id }}">{{ comment.username }}</a>:
+</p>
+<p>
+  {% for line in comment.content.splitlines() %}
+  {{ line }}{% if not loop.last %}<br>{% endif %}
+  {% endfor %}
+</p>
+<hr>
+{% else %}
+<p>Ei vielä kommentteja.</p>
+{% endfor %}
+
+{% if session.user_id %}
+<h2>Lisää kommentti</h2>
+
+{% for error in errors %}
+<p>{{ error }}</p>
+{% endfor %}
+
+<form action="/create_comment/{{ book.id }}" method="post">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+  <p>
+    <label for="content">Kommentti (enintään 5000 merkkiä):</label><br>
+    <textarea id="content" name="content" rows="6" cols="50" maxlength="5000" required>{{ request.form.get('content', '') }}</textarea>
+  </p>
+
+  <input type="submit" value="Lähetä">
+</form>
+{% else %}
+<p><a href="/login">Kirjaudu sisään</a> kommentoidaksesi kirjasuositusta.</p>
 {% endif %}
 
 <p><a href="/">Takaisin</a></p>
